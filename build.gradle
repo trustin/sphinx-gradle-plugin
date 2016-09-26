@@ -1,0 +1,183 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+ext {
+    pomFile = file("${project.buildDir}/generated-pom.xml")
+    isReleaseVersion = !(project.version =~ /-SNAPSHOT$/)
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+configurations {
+    all*.exclude module: 'maven-filtering'
+    all*.exclude module: 'maven-reporting-api'
+    all*.exclude module: 'maven-reporting-impl'
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '1.5.0.Final'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+signing {
+    required { signatory != null && project.ext.isReleaseVersion }
+    sign configurations.archives
+}
+
+publishing {
+    repositories {
+        maven {
+            if (project.ext.isReleaseVersion) {
+                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            } else {
+                url 'https://oss.sonatype.org/content/repositories/snapshots/'
+            }
+
+            credentials {
+                username = project.properties.ossrhUsername
+                password = project.properties.ossrhPassword
+            }
+        }
+    }
+    publications {
+        jar(MavenPublication) {
+            pom.withXml {
+                NodeList children = asNode().children()
+                Node dependencies = children.find { it.name().localPart == 'dependencies' } as Node
+
+                children[children.indexOf(dependencies) - 1] + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name "${project.name}"
+                    description 'Sphinx site generation plugin for Gradle'
+                    url 'http://trustin.github.io/sphinx-gradle-plugin/'
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/license/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    inceptionYear 2016
+                    organization {
+                        name 'Trustin Lee et al'
+                        url 'http://trustin.github.io/sphinx-maven-plugin/'
+                    }
+                    developers {
+                        developer {
+                            id 'trustin'
+                            name 'Trustin Lee'
+                            url 'https://github.com/trustin'
+                        }
+                    }
+                    scm {
+                        url 'https://github.com/trustin/sphinx-gradle-plugin'
+                        connection 'scm:git:https://github.com/trustin/sphinx-gradle-plugin.git'
+                        developerConnection 'scm:git:ssh://git@github.com/trustin/sphinx-gradle-plugin.git'
+                    }
+                }
+
+                // Exclude Maven-related transitive dependencies.
+                dependencies.children().find { it.artifactId.text() == 'sphinx-maven-plugin' }
+                        .children().last() + {
+
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    exclusions {
+                        exclusion {
+                            groupId 'org.apache.maven.shared'
+                            artifactId 'maven-filtering'
+                        }
+                        exclusion {
+                            groupId 'org.apache.maven.reporting'
+                            artifactId 'maven-reporting-api'
+                        }
+                        exclusion {
+                            groupId 'org.apache.maven.reporting'
+                            artifactId 'maven-reporting-impl'
+                        }
+                    }
+                }
+            }
+
+            from components.java
+
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
+
+            // Sign the pom.xml and artifacts.
+            if (signing.required) {
+                // Sign the pom.xml.
+                pom.withXml {
+                    writeTo(project.ext.pomFile)
+                    def pomAscFile = signing.sign(project.ext.pomFile).signatureFiles[0]
+                    artifact(pomAscFile) {
+                        classifier = null
+                        extension = 'pom.asc'
+                    }
+                    project.ext.pomFile.delete()
+                }
+
+                // Sign the artifacts.
+                project.tasks.signArchives.signatureFiles.each {
+                    artifact(it) {
+                        def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                        if (matcher.find()) {
+                            classifier = matcher.group(1)
+                        } else {
+                            classifier = null
+                        }
+                        extension = 'jar.asc'
+                    }
+                }
+            }
+        }
+    }
+}
+
+model {
+    tasks.publishJarPublicationToMavenLocal {
+        dependsOn(project.tasks.signArchives)
+    }
+    tasks.publishJarPublicationToMavenRepository {
+        dependsOn(project.tasks.signArchives)
+    }
+}
+
+task install(dependsOn: publishToMavenLocal)
+
+task site(type: JavaExec, dependsOn: install) {
+    inputs.dir "${project.projectDir}/src/sphinx"
+    outputs.dir "${project.buildDir}/site"
+    classpath sourceSets.test.runtimeClasspath
+    main 'kr.motd.gradle.sphinx.SiteMain'
+    args "${project.projectDir}", "${gradle.gradleUserHomeDir}"
+}
