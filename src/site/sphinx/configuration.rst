@@ -11,7 +11,7 @@ The ``sphinx-gradle`` plugin has these configuration options:
 ======================== ================================================================================================= ========================================
 Parameter                Description                                                                                       Default value
 ======================== ================================================================================================= ========================================
-``sourceDirectory``      The directory containing the documentation source.                                                ``${project.projectDir}/src/sphinx``
+``sourceDirectory``      The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
 ``outputDirectory``      The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
 ``builder``              The builder to use. See the `Sphinx commandline documentation`_ for a list of possible builders.  ``html``
 ``verbose``              Whether Sphinx should generate verbose output.                                                    ``true``
@@ -55,7 +55,7 @@ PlantUML Config
     @enduml
 
 You will need to add some additional configuration options to your ``conf.py`` file (usually in
-``src/sphinx``) to tell Sphinx how to work with *.. uml::* directives. The steps involved are
+``src/site/sphinx``) to tell Sphinx how to work with *.. uml::* directives. The steps involved are
 
 * You will need to add 'sphinxcontrib-plantuml' as an extension within the extension's list defined within
   ``conf.py``

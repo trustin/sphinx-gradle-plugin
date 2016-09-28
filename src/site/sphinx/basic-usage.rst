@@ -15,7 +15,7 @@ Using the Plugin
 
 The *sphinx-gradle-plugin* looks for *.rst* files in the folder structure provided as part of plugin
 configuration within your ``build.gradle`` file. The default location where the plugin will look for the files
-is ``src/sphinx``.
+is ``src/site/sphinx``.
 
 The folder specified will contain the `reStructured Text`_ source files plus any additional things like themes
 and configuration. The `Sphinx first steps tutorial`_ gives a good introduction into the required tasks.

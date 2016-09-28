@@ -12,7 +12,9 @@ import org.gradle.api.tasks.TaskAction
 
 class SphinxTask extends DefaultTask {
 
-    def sourceDirectory = { "${project.projectDir}${File.separator}src${File.separator}sphinx" }
+    def sourceDirectory = {
+        "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
+    }
     def outputDirectory = { "${project.buildDir}${File.separator}site" }
     def sphinxSourceDirectory = { "${project.buildDir}${File.separator}sphinx" }
     def builder = { "html" }
