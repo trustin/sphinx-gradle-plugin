@@ -2,6 +2,7 @@ package kr.motd.gradle.sphinx.gradle
 
 import kr.motd.maven.sphinx.SphinxException
 import kr.motd.maven.sphinx.SphinxRunner
+import kr.motd.maven.sphinx.SphinxUtil
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -83,6 +84,7 @@ class SphinxTask extends DefaultTask {
             if (result != 0) {
                 throw new SphinxException("Sphinx exited with non-zero code: ${result}")
             }
+            SphinxUtil.convertLineSeparators(getOutputDirectory())
         } finally {
             runner.destroy()
         }

@@ -6,7 +6,7 @@ from recommonmark.parser import CommonMarkParser
 project = u'sphinx-gradle-plugin'
 copyright = u'2016, Trustin Lee et al'
 version = '1.0'
-release = '1.0.0.Final'
+release = '1.0.1.Final'
 
 # General options
 needs_sphinx = '1.0'
