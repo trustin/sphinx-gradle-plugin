@@ -47,6 +47,8 @@ support in his fork. I'd like to appreciate their effort that did all the heavy 
 1.0.1.Final (28-Sep-2016)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 - Fixed line ending issues with the generated site
+- Change the default ``sourceDirectory`` from ``src/sphinx`` to ``src/site/sphinx`` to be consistent with
+  ``sphinx-maven-plugin``
 
 1.0.0.Final (27-Sep-2016)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
