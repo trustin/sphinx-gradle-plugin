@@ -56,7 +56,7 @@ class SphinxTaskTest {
     void testGeneration() {
         project.ant.mkdir(dir: "${task.sourceDirectory}")
         project.ant.copy(todir: "${task.sourceDirectory}") {
-            fileset(dir: "${getClass().protectionDomain.codeSource.location.path}/../../../src/sphinx")
+            fileset(dir: "${getClass().protectionDomain.codeSource.location.path}/../../../src/site/sphinx")
         }
 
         task.run()
