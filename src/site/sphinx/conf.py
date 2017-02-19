@@ -4,9 +4,9 @@ import sys, os
 from recommonmark.parser import CommonMarkParser
 
 project = u'sphinx-gradle-plugin'
-copyright = u'2016, Trustin Lee et al'
+copyright = u'2017, Trustin Lee et al'
 version = '1.0'
-release = '1.0.2.Final'
+release = '1.0.3.Final'
 
 # General options
 needs_sphinx = '1.0'

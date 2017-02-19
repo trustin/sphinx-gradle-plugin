@@ -44,6 +44,14 @@ This plugin reuses the ``SphinxRunner`` implementation of ``sphinx-maven-plugin`
 `Thomas Dudziak`_. `Bala Sridhar`_ since then upgraded Sphinx to 1.3.1 and added PlantUML and JavaSphinx
 support in his fork. I'd like to appreciate their effort that did all the heavy lifting.
 
+1.0.3.Final (19-Feb-2017)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+- Updated sphinx-maven-plugin to 1.5.3, which includes:
+
+  - Sphinx 1.5.2
+  - sphinx_rtd_theme master (eef98b3)
+  - PyYAML 3.12
+
 1.0.2.Final (28-Sep-2016)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 - Fixed a bug where line ending conversion is not performed on CSS files
