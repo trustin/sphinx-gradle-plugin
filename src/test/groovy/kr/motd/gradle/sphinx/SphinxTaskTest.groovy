@@ -54,9 +54,14 @@ class SphinxTaskTest {
 
     @Test
     void testGeneration() {
+        def sourceDir = ['../../../..', '../../..'].stream()
+                .map({ "${getClass().protectionDomain.codeSource.location.path}$it/src/site/sphinx" })
+                .filter({ new File(it).isDirectory() })
+                .findFirst().get()
+
         project.ant.mkdir(dir: "${task.sourceDirectory}")
         project.ant.copy(todir: "${task.sourceDirectory}") {
-            fileset(dir: "${getClass().protectionDomain.codeSource.location.path}/../../../src/site/sphinx")
+            fileset(dir: sourceDir)
         }
 
         task.run()

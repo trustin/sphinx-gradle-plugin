@@ -44,6 +44,40 @@ This plugin reuses the ``SphinxRunner`` implementation of ``sphinx-maven-plugin`
 `Thomas Dudziak`_. `Bala Sridhar`_ since then upgraded Sphinx to 1.3.1 and added PlantUML and JavaSphinx
 support in his fork. I'd like to appreciate their effort that did all the heavy lifting.
 
+1.0.4 (15-Sep-2017)
+^^^^^^^^^^^^^^^^^^^
+- Updated sphinx-maven-plugin to 1.6.0, which includes:
+
+  - Updates:
+
+    - alabaster 0.7.10
+    - Babel 2.5.1
+    - CommonMark 0.7.4
+    - docutils 0.14
+    - javalang 0.11.0
+    - Jinja2 2.9.6
+    - Jython 2.7.1
+    - MarkupSafe 1.0
+    - pytz 2017.2
+    - requests 2.18.4
+    - Sphinx 1.6.3
+    - sphinx_rtd_theme 0.2.5b1
+    - sphinxcontrib-inlinesyntaxhighlight HEAD
+    - sphinxcontrib-plantuml 0.8.1
+
+  - New themes:
+
+    - sphinx_bootstrap_theme 0.6.0
+    - guzzle_sphinx_theme 0.7.11
+
+  - New dependencies:
+
+    - certifi 2017.7.27.1
+    - chardet 3.0.4
+    - idna 2.6
+    - typing 3.6.2
+    - urllib3 1.22
+
 1.0.3.Final (19-Feb-2017)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 - Updated sphinx-maven-plugin to 1.5.3, which includes:
