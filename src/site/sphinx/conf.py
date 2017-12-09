@@ -18,7 +18,7 @@ with open('test.yaml', 'r') as stream:
 project = u'sphinx-gradle-plugin'
 copyright = u'2017, Trustin Lee et al'
 version = '1.0'
-release = '1.0.6'
+release = '1.0.7'
 
 # General options
 needs_sphinx = '1.0'
