@@ -46,14 +46,18 @@ class SphinxTask extends DefaultTask {
 
     @Input
     List<String> getTags() {
-        (tags instanceof Iterable ? tags : tags()).toList()
+        return (tags instanceof Iterable ? tags : tags.call()).toList()
     }
 
     void tags(String... tags) {
         this.tags = Arrays.asList(tags)
     }
 
-    void tags(Object tags) {
+    void tags(Iterable<String> tags) {
+        this.tags = tags
+    }
+
+    void tags(Closure tags) {
         this.tags = tags
     }
 

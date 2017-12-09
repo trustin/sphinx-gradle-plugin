@@ -11,6 +11,7 @@ final class SiteMain {
                                     .withGradleUserHomeDir(new File(args[1])).build()
 
         def task = project.task('sphinx', type: SphinxTask) as SphinxTask
+        task.tags({ ["tagFoo", "tagBar"] })
         task.run()
     }
 }
