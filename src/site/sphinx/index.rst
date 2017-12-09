@@ -44,6 +44,22 @@ This plugin reuses the ``SphinxRunner`` implementation of ``sphinx-maven-plugin`
 `Thomas Dudziak`_. `Bala Sridhar`_ since then upgraded Sphinx to 1.3.1 and added PlantUML and JavaSphinx
 support in his fork. I'd like to appreciate their effort that did all the heavy lifting.
 
+1.0.6 (09-Dec-2017)
+^^^^^^^^^^^^^^^^^^^
+- Updated sphinx-maven-plugin to 1.6.2:
+
+  - Updates:
+
+    - Sphinx 1.6.5
+    - sphinx_rtd_theme 0.2.5b2
+    - sphinxcontrib-plantuml 0.8.2
+
+  - New extensions:
+
+    - sphinxcontrib-scaladomain 0.1a1
+
+- Fixed a bug where tags are sometimes not passed to ``conf.py``.
+
 1.0.5 (16-Sep-2017)
 ^^^^^^^^^^^^^^^^^^^
 - Updated sphinx-maven-plugin to 1.6.1:

@@ -27,7 +27,7 @@ pygments_style = 'tango'
 add_function_parentheses = True
 
 extensions = ['sphinx.ext.autodoc', 'javasphinx',
-              'sphinxcontrib.inlinesyntaxhighlight', 'sphinxcontrib.plantuml']
+              'sphinxcontrib.inlinesyntaxhighlight', 'sphinxcontrib.plantuml', 'sphinxcontrib.scaladomain']
 templates_path = ['_templates']
 exclude_trees = ['.build']
 source_suffix = ['.rst', '.md']

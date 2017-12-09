@@ -64,6 +64,7 @@ class SphinxTaskTest {
             fileset(dir: sourceDir)
         }
 
+        task.tags({ ["tagFoo", "tagBar"] })
         task.run()
 
         assert new File("${task.outputDirectory}/index.html").exists()
