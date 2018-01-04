@@ -17,8 +17,8 @@ with open('test.yaml', 'r') as stream:
 
 project = u'sphinx-gradle-plugin'
 copyright = u'2017, Trustin Lee et al'
-version = '1.0'
-release = '1.0.7'
+version = '1.1'
+release = '1.1.0'
 
 # General options
 needs_sphinx = '1.0'
@@ -26,8 +26,10 @@ master_doc = 'index'
 pygments_style = 'tango'
 add_function_parentheses = True
 
-extensions = ['sphinx.ext.autodoc', 'javasphinx',
-              'sphinxcontrib.inlinesyntaxhighlight', 'sphinxcontrib.plantuml', 'sphinxcontrib.scaladomain']
+extensions = ['sphinx.ext.autodoc', 'javasphinx', 'sphinxcontrib.httpdomain',
+              'sphinxcontrib.inlinesyntaxhighlight', 'sphinxcontrib.plantuml',
+              'sphinxcontrib.scaladomain']
+
 templates_path = ['_templates']
 exclude_trees = ['.build']
 source_suffix = ['.rst', '.md']

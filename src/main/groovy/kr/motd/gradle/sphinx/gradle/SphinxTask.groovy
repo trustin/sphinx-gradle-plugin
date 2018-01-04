@@ -78,21 +78,18 @@ class SphinxTask extends DefaultTask {
 
     @TaskAction
     def run() {
-        SphinxRunner runner = new SphinxRunner(getSphinxSourceDirectory()) {
-            @Override
-            protected void log(String s) {
-                logger.debug(s)
-            }
-        }
-
+        SphinxRunner runner = null;
         try {
-            int result = runner.runSphinx(getSphinxRunnerCmdLine());
+            runner = new SphinxRunner(getSphinxSourceDirectory(), { logger.debug(it) });
+            int result = runner.run(getSphinxRunnerCmdLine());
             if (result != 0) {
                 throw new SphinxException("Sphinx exited with non-zero code: ${result}")
             }
             SphinxUtil.convertLineSeparators(getOutputDirectory())
         } finally {
-            runner.destroy()
+            if (runner != null) {
+                runner.close();
+            }
         }
     }
 
