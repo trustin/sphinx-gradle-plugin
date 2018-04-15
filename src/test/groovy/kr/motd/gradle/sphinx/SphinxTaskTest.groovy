@@ -64,6 +64,7 @@ class SphinxTaskTest {
             fileset(dir: sourceDir)
         }
 
+        task.binaryCacheDir = new File(".gradle/sphinx-binary")
         task.tags({ ["tagFoo", "tagBar"] })
         task.run()
 

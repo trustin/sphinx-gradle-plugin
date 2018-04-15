@@ -12,31 +12,51 @@ import org.gradle.api.tasks.TaskAction
 
 class SphinxTask extends DefaultTask {
 
+    def binaryBaseUrl = { SphinxRunner.DEFAULT_BINARY_BASE_URL }
+    def binaryVersion = { SphinxRunner.DEFAULT_BINARY_VERSION }
+    def binaryCacheDir = { "${project.gradle.gradleUserHomeDir}/caches/sphinx-binary" }
     def sourceDirectory = {
         "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
     }
     def outputDirectory = { "${project.buildDir}${File.separator}site" }
-    def sphinxSourceDirectory = { "${project.buildDir}${File.separator}sphinx" }
     def builder = { "html" }
     def tags = { Collections.emptyList() }
     def verbose = { true }
     def force = { false }
     def warningsAsErrors = { false }
+    def skip = { false }
+
+    @Input
+    String getBinaryBaseUrl() {
+        (binaryBaseUrl instanceof CharSequence ? binaryBaseUrl : binaryBaseUrl()).toString()
+    }
+
+    @Input
+    String getBinaryVersion() {
+        (binaryVersion instanceof CharSequence ? binaryVersion : binaryVersion()).toString()
+    }
+
+    @Input
+    File getBinaryCacheDir() {
+        if (binaryCacheDir instanceof File) {
+            return binaryCacheDir.getCanonicalFile()
+        }
+        if (binaryCacheDir instanceof CharSequence) {
+            return project.file(binaryCacheDir).getCanonicalFile()
+        }
+
+        return project.file(binaryCacheDir()).getCanonicalFile()
+    }
 
     @SkipWhenEmpty
     @InputDirectory
     File getSourceDirectory() {
-        project.file(sourceDirectory)
+        project.file(sourceDirectory).getCanonicalFile()
     }
 
     @OutputDirectory
     File getOutputDirectory() {
-        project.file(outputDirectory)
-    }
-
-    @OutputDirectory
-    File getSphinxSourceDirectory() {
-        project.file(sphinxSourceDirectory)
+        project.file(outputDirectory).getCanonicalFile()
     }
 
     @Input
@@ -46,7 +66,7 @@ class SphinxTask extends DefaultTask {
 
     @Input
     List<String> getTags() {
-        return (tags instanceof Iterable ? tags : tags.call()).toList()
+        (tags instanceof Iterable ? tags : tags()).toList()
     }
 
     void tags(String... tags) {
@@ -76,21 +96,25 @@ class SphinxTask extends DefaultTask {
         (warningsAsErrors instanceof Boolean ? warningsAsErrors : warningsAsErrors()).asBoolean()
     }
 
+    @Input
+    boolean isSkip() {
+        (skip instanceof Boolean ? skip : skip()).asBoolean()
+    }
+
     @TaskAction
     def run() {
-        SphinxRunner runner = null;
-        try {
-            runner = new SphinxRunner(getSphinxSourceDirectory(), { logger.debug(it) });
-            int result = runner.run(getSphinxRunnerCmdLine());
-            if (result != 0) {
-                throw new SphinxException("Sphinx exited with non-zero code: ${result}")
-            }
-            SphinxUtil.convertLineSeparators(getOutputDirectory())
-        } finally {
-            if (runner != null) {
-                runner.close();
-            }
+        if (isSkip()) {
+            logger.info("Skipping Sphinx execution.")
+            return
         }
+        SphinxRunner runner = new SphinxRunner(getBinaryBaseUrl(), getBinaryVersion(), getBinaryCacheDir(),
+                                               { logger.lifecycle(it) });
+        int result = runner.run(getSourceDirectory().getCanonicalFile(),
+                                getSphinxRunnerCmdLine())
+        if (result != 0) {
+            throw new SphinxException("Sphinx exited with non-zero code: ${result}")
+        }
+        SphinxUtil.convertLineSeparators(getOutputDirectory())
     }
 
     /**
@@ -124,8 +148,8 @@ class SphinxTask extends DefaultTask {
         args.add('-b');
         args.add(getBuilder());
 
-        args.add(getSourceDirectory().getPath());
-        args.add(getOutputDirectory().getPath());
+        args.add(getSourceDirectory().getCanonicalPath());
+        args.add(getOutputDirectory().getCanonicalPath());
 
         return args;
     }
