@@ -1,0 +1,16 @@
+language: generic
+sudo: false
+dist: trusty
+os:
+  - linux
+  - osx
+cache:
+  directories:
+    - "$HOME/.gradle/wrapper/dists"
+    - "$HOME/.gradle/caches/jars-3"
+    - "$HOME/.gradle/caches/modules-2"
+    - "$HOME/.gradle/caches/sphinx-binary"
+script:
+  - ./gradlew --no-daemon clean build site
+notifications:
+  email: false

@@ -1,0 +1,22 @@
+version: "{branch}.{build}"
+image:
+  - "Visual Studio 2015"
+environment:
+  PATH: "C:\\msys64\\usr\\bin;%PATH%"
+  matrix:
+    - APPVEYOR_BITS: 32
+    - APPVEYOR_BITS: 64
+cache:
+  - "%USERPROFILE%\\.gradle\\wrapper\\dists"
+  - "%USERPROFILE%\\.gradle\\caches\\jars-3"
+  - "%USERPROFILE%\\.gradle\\caches\\modules-2"
+  - "%USERPROFILE%\\.gradle\\caches\\sphinx-binary"
+init:
+  - git config --global core.autocrlf true
+build:
+  verbosity: detailed
+build_script:
+  - 'gradlew.bat --no-daemon clean build site'
+test: off
+matrix:
+  fast_finish: true
