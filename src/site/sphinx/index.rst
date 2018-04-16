@@ -48,120 +48,15 @@ This plugin provides the following additional themes out of the box:
 - `sphinx_bootstrap_theme <http://ryan-roemer.github.io/sphinx-bootstrap-theme/>`_
 - `sphinx_rtd_theme <https://sphinx-rtd-theme.readthedocs.io/en/latest/>`_
 
-Credits and changes
--------------------
+Changelog
+---------
+See `the GitHub releases page <https://github.com/trustin/sphinx-gradle-plugin/releases>`_.
+
+Credits
+-------
 This plugin reuses the ``SphinxRunner`` implementation of ``sphinx-maven-plugin`` originally written by
 `Thomas Dudziak`_. `Bala Sridhar`_ since then upgraded Sphinx to 1.3.1 and added PlantUML and JavaSphinx
 support in his fork. I'd like to appreciate their effort that did all the heavy lifting.
-
-2.0.0 (15-Apr-2018)
-^^^^^^^^^^^^^^^^^^^
-
-- Added ``skip`` option
-- Updates:
-
-  - Sphinx 1.7.2
-  - sphinxcontrib-httpdomain 1.6.1
-  - sphinxcontrib-plantuml 0.11
-  - sphinx_bootstrap_theme 0.6.5
-  - sphinx_rtd_theme 0.3.0
-
-- Removed extensions:
-
-  - sphinxcontrib-scala - seems unmaintained
-
-- Use CPython 3.6 instead of Jython
-
-  - See `sphinx-binary <https://github.com/trustin/sphinx-binary>`_ for more information.
-
-1.1.0 (04-Jan-2017)
-^^^^^^^^^^^^^^^^^^^
-- Updated sphinx-maven-plugin to 1.7.0:
-
-  - Slightly reduced startup time
-  - Refactoring and clean-up
-  - New extensions:
-
-    - sphinxcontrib-httpdomain 1.5.0
-
-1.0.6 (09-Dec-2017)
-^^^^^^^^^^^^^^^^^^^
-- Updated sphinx-maven-plugin to 1.6.2:
-
-  - Updates:
-
-    - Sphinx 1.6.5
-    - sphinx_rtd_theme 0.2.5b2
-    - sphinxcontrib-plantuml 0.8.2
-
-  - New extensions:
-
-    - sphinxcontrib-scaladomain 0.1a1
-
-- Fixed a bug where tags are sometimes not passed to ``conf.py``.
-
-1.0.5 (16-Sep-2017)
-^^^^^^^^^^^^^^^^^^^
-- Updated sphinx-maven-plugin to 1.6.1:
-
-  - Ship pre-compiled Python classes instead of source files
-  - Add some missing transitive dependencies of Sphinx and JavaSphinx
-
-1.0.4 (15-Sep-2017)
-^^^^^^^^^^^^^^^^^^^
-- Updated sphinx-maven-plugin to 1.6.0:
-
-  - Updates:
-
-    - alabaster 0.7.10
-    - Babel 2.5.1
-    - CommonMark 0.7.4
-    - docutils 0.14
-    - javalang 0.11.0
-    - Jinja2 2.9.6
-    - Jython 2.7.1
-    - MarkupSafe 1.0
-    - pytz 2017.2
-    - requests 2.18.4
-    - Sphinx 1.6.3
-    - sphinx_rtd_theme 0.2.5b1
-    - sphinxcontrib-inlinesyntaxhighlight HEAD
-    - sphinxcontrib-plantuml 0.8.1
-
-  - New themes:
-
-    - sphinx_bootstrap_theme 0.6.0
-    - guzzle_sphinx_theme 0.7.11
-
-  - New dependencies:
-
-    - certifi 2017.7.27.1
-    - chardet 3.0.4
-    - idna 2.6
-    - typing 3.6.2
-    - urllib3 1.22
-
-1.0.3.Final (19-Feb-2017)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-- Updated sphinx-maven-plugin to 1.5.3, which includes:
-
-  - Sphinx 1.5.2
-  - sphinx_rtd_theme master (eef98b3)
-  - PyYAML 3.12
-
-1.0.2.Final (28-Sep-2016)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-- Fixed a bug where line ending conversion is not performed on CSS files
-
-1.0.1.Final (28-Sep-2016)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-- Fixed line ending issues with the generated site
-- Change the default ``sourceDirectory`` from ``src/sphinx`` to ``src/site/sphinx`` to be consistent with
-  ``sphinx-maven-plugin``
-
-1.0.0.Final (27-Sep-2016)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-- Initial release
 
 Read more
 ---------
