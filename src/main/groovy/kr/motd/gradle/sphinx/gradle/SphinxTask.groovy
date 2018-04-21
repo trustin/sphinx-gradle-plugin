@@ -4,48 +4,80 @@ import kr.motd.maven.sphinx.SphinxException
 import kr.motd.maven.sphinx.SphinxRunner
 import kr.motd.maven.sphinx.SphinxUtil
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.SkipWhenEmpty
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.InvalidUserDataException
+import org.gradle.api.tasks.*
+
+import java.util.concurrent.Callable
 
 class SphinxTask extends DefaultTask {
 
     def binaryBaseUrl = { SphinxRunner.DEFAULT_BINARY_BASE_URL }
     def binaryVersion = { SphinxRunner.DEFAULT_BINARY_VERSION }
     def binaryCacheDir = { "${project.gradle.gradleUserHomeDir}/caches/sphinx-binary" }
+    def environments = { Collections.emptyMap() }
+    private final def additionalEnvironments = new HashMap<String, String>()
+    def dotBinary = null
     def sourceDirectory = {
         "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
     }
     def outputDirectory = { "${project.buildDir}${File.separator}site" }
     def builder = { "html" }
     def tags = { Collections.emptyList() }
+    private final def additionalTags = new ArrayList<String>()
     def verbose = { true }
     def force = { false }
     def warningsAsErrors = { false }
     def skip = { false }
 
+    private static def unwrap(Object o) {
+        if (o instanceof Callable) {
+            return o.call()
+        } else {
+            return o
+        }
+    }
+
     @Input
     String getBinaryBaseUrl() {
-        (binaryBaseUrl instanceof CharSequence ? binaryBaseUrl : binaryBaseUrl()).toString()
+        return String.valueOf(unwrap(binaryBaseUrl))
     }
 
     @Input
     String getBinaryVersion() {
-        (binaryVersion instanceof CharSequence ? binaryVersion : binaryVersion()).toString()
+        return String.valueOf(unwrap(binaryVersion))
     }
 
     @Input
     File getBinaryCacheDir() {
-        if (binaryCacheDir instanceof File) {
-            return binaryCacheDir.getCanonicalFile()
-        }
-        if (binaryCacheDir instanceof CharSequence) {
-            return project.file(binaryCacheDir).getCanonicalFile()
+        return project.file(binaryCacheDir).getCanonicalFile()
+    }
+
+    @Input
+    Map<String, String> getEnvironments() {
+        def unwrapped = unwrap(environments)
+        if (!(unwrapped instanceof Map)) {
+            throw new InvalidUserDataException(
+                    "environments must yield a Map<String, String>: ${unwrapped.getClass().name}")
         }
 
-        return project.file(binaryCacheDir()).getCanonicalFile()
+        Map<String, String> env = new HashMap<>()
+        env.putAll(unwrapped)
+        env.putAll(additionalEnvironments)
+        return env
+    }
+
+    void env(String name, String value) {
+        additionalEnvironments.put(name, value)
+    }
+
+    @Input
+    String getDotBinary() {
+        def unwrapped = unwrap(dotBinary)
+        if (unwrapped == null) {
+            return null
+        } else {
+            return String.valueOf(unwrapped)
+        }
     }
 
     @SkipWhenEmpty
@@ -61,24 +93,28 @@ class SphinxTask extends DefaultTask {
 
     @Input
     String getBuilder() {
-        (builder instanceof CharSequence ? builder : builder()).toString()
+        return String.valueOf(unwrap(builder))
     }
 
     @Input
     List<String> getTags() {
-        (tags instanceof Iterable ? tags : tags()).toList()
+        def unwrapped = unwrap(tags)
+        def result = new ArrayList<String>()
+        if (unwrapped instanceof Iterable) {
+            result.addAll(unwrapped)
+        } else {
+            result.add(String.valueOf(unwrapped))
+        }
+        result.addAll(additionalTags)
+        return result
     }
 
     void tags(String... tags) {
-        this.tags = Arrays.asList(tags)
+        additionalTags.addAll(tags)
     }
 
     void tags(Iterable<String> tags) {
-        this.tags = tags
-    }
-
-    void tags(Closure tags) {
-        this.tags = tags
+        tags.forEach { additionalTags.add(it) }
     }
 
     @Input
@@ -107,10 +143,12 @@ class SphinxTask extends DefaultTask {
             logger.info("Skipping Sphinx execution.")
             return
         }
-        SphinxRunner runner = new SphinxRunner(getBinaryBaseUrl(), getBinaryVersion(), getBinaryCacheDir(),
-                                               { logger.lifecycle(it) });
-        int result = runner.run(getSourceDirectory().getCanonicalFile(),
-                                getSphinxRunnerCmdLine())
+
+        SphinxRunner runner = new SphinxRunner(
+                getBinaryBaseUrl(), getBinaryVersion(), getBinaryCacheDir(),
+                getEnvironments(), getDotBinary(), { logger.lifecycle(it) })
+
+        int result = runner.run(getSourceDirectory(), getSphinxRunnerCmdLine())
         if (result != 0) {
             throw new SphinxException("Sphinx exited with non-zero code: ${result}")
         }
@@ -124,33 +162,33 @@ class SphinxTask extends DefaultTask {
         List<String> args = []
 
         if (isVerbose()) {
-            args.add('-v');
+            args.add('-v')
         } else {
-            args.add('-Q');
+            args.add('-Q')
         }
 
         if (isWarningsAsErrors()) {
-            args.add('-W');
+            args.add('-W')
         }
 
         if (isForce()) {
-            args.add('-a');
-            args.add('-E');
+            args.add('-a')
+            args.add('-E')
         }
 
         for (String tag : getTags()) {
-            args.add("-t");
-            args.add(tag);
+            args.add("-t")
+            args.add(tag)
         }
 
-        args.add('-n');
+        args.add('-n')
 
-        args.add('-b');
-        args.add(getBuilder());
+        args.add('-b')
+        args.add(getBuilder())
 
-        args.add(getSourceDirectory().getCanonicalPath());
-        args.add(getOutputDirectory().getCanonicalPath());
+        args.add(getSourceDirectory().getPath())
+        args.add(getOutputDirectory().getPath())
 
-        return args;
+        return args
     }
 }

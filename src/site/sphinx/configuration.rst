@@ -5,13 +5,15 @@
 Configuration
 =============
 
-The ``sphinx-gradle`` plugin has these configuration options:
+``sphinx-gradle-plugin`` has these configuration options:
 
 ======================== ================================================================================================= ========================================
 Parameter                Description                                                                                       Default value
 ======================== ================================================================================================= ========================================
 ``sourceDirectory``      The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
 ``outputDirectory``      The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
+``environments``         The environment variables to set when launching Sphinx. e.g. ``environments = ['foo':'bar']``
+``dotBinary``            The path of Graphviz ``dot`` binary.
 ``builder``              The builder to use. See `Available builders`_ for a list of possible builders.                    ``html``
 ``verbose``              Whether Sphinx should generate verbose output.                                                    ``true``
 ``warningsAsErrors``     Whether warnings should be treated as errors.                                                     ``false``
@@ -23,7 +25,7 @@ Parameter                Description                                            
 Using PlantUML
 ==============
 
-The ``sphinx-gradle`` plugin has support for converting uml described using *PlantUML* text format within a
+``sphinx-gradle-plugin`` has support for converting uml described using *PlantUML* text format within a
 *.rst* file to an image. It automatically references the image as part of the documentation in the appropriate
 place where the UML was defined in the reStructured Text source file. As mentioned before, PlantUML requires
 **GraphViz** to be installed on the local machine.

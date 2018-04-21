@@ -30,6 +30,12 @@ To apply this plugin, add the following to your ``build.gradle`` file:
     }
   }
 
+  // Apply the 'base' plugin, which adds the 'site' task.
+  // Note: You do not need to apply the 'base' plugin if you applied
+  //       other plugin that extends 'base', such as 'java'.
+  apply plugin: 'base'
+
+  // Apply the Sphinx plugin.
   apply plugin: 'kr.motd.sphinx'
 
 Now you can build your project web site using the ``site`` or ``sphinx`` task::
@@ -37,3 +43,19 @@ Now you can build your project web site using the ``site`` or ``sphinx`` task::
   ./gradlew site
 
 This will generate the documentation in the `build/site` folder.
+
+You can also specify additional configuration properties:
+
+.. code-block:: groovy
+
+  sphinx {
+    // Change the source directory.
+    sourceDirectory = "${projectDir}/alternative-src/sphinx"
+    // Change the output directory.
+    outputDirectory = "${project.buildDir}/alternative-site"
+    // Add environment variables.
+    environments = ['ENV_FOO': 'value1', 'ENV_BAR': 'value2']
+    env 'ENV_BAZ', 'value3'
+    // Add tags.
+    tags 'tagA', 'tagB'
+  }

@@ -66,7 +66,10 @@ class SphinxTaskTest {
 
         task.binaryCacheDir = new File(System.getProperty("user.home") +
                                        "/.gradle/caches/sphinx-binary")
-        task.tags({ ["tagFoo", "tagBar"] })
+        task.tags = { ["tagFoo"] }
+        task.tags "tagBar"
+        task.environments = { ['ENV_FOO': '1'] }
+        task.env 'ENV_BAR', '2'
         task.run()
 
         assert new File("${task.outputDirectory}/index.html").exists()
