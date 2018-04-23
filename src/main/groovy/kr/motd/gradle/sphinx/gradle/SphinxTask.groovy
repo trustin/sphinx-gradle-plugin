@@ -71,6 +71,7 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
+    @Optional
     String getDotBinary() {
         def unwrapped = unwrap(dotBinary)
         if (unwrapped == null) {
