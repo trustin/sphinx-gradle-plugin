@@ -11,8 +11,7 @@ import java.util.concurrent.Callable
 
 class SphinxTask extends DefaultTask {
 
-    def binaryBaseUrl = { SphinxRunner.DEFAULT_BINARY_BASE_URL }
-    def binaryVersion = { SphinxRunner.DEFAULT_BINARY_VERSION }
+    def binaryUrl = { SphinxRunner.DEFAULT_BINARY_URL }
     def binaryCacheDir = { "${project.gradle.gradleUserHomeDir}/caches/sphinx-binary" }
     def environments = { Collections.emptyMap() }
     private final def additionalEnvironments = new HashMap<String, String>()
@@ -38,13 +37,8 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
-    String getBinaryBaseUrl() {
-        return String.valueOf(unwrap(binaryBaseUrl))
-    }
-
-    @Input
-    String getBinaryVersion() {
-        return String.valueOf(unwrap(binaryVersion))
+    String getBinaryUrl() {
+        return String.valueOf(unwrap(binaryUrl))
     }
 
     @Input
@@ -146,7 +140,7 @@ class SphinxTask extends DefaultTask {
         }
 
         SphinxRunner runner = new SphinxRunner(
-                getBinaryBaseUrl(), getBinaryVersion(), getBinaryCacheDir(),
+                getBinaryUrl(), getBinaryCacheDir(),
                 getEnvironments(), getDotBinary(), { logger.lifecycle(it) })
 
         int result = runner.run(getSourceDirectory(), getSphinxRunnerCmdLine())

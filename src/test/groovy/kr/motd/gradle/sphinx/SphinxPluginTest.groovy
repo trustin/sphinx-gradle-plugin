@@ -4,7 +4,6 @@ import kr.motd.gradle.sphinx.gradle.SphinxTask
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 

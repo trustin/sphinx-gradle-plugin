@@ -12,6 +12,7 @@ Parameter                Description                                            
 ======================== ================================================================================================= ========================================
 ``sourceDirectory``      The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
 ``outputDirectory``      The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
+``binaryUrl``            The URL of the Sphinx executable binary. Must start with ``file:``, ``http:`` or ``https:``       <automatic>
 ``environments``         The environment variables to set when launching Sphinx. e.g. ``environments = ['foo':'bar']``
 ``dotBinary``            The path of Graphviz ``dot`` binary.
 ``builder``              The builder to use. See `Available builders`_ for a list of possible builders.                    ``html``
