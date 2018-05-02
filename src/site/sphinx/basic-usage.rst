@@ -21,13 +21,8 @@ To apply this plugin, add the following to your ``build.gradle`` file:
 
 .. parsed-literal::
 
-  buildscript {
-    repositories {
-      mavenCentral()
-    }
-    dependencies {
-      classpath group: 'kr.motd.gradle', name: 'sphinx-gradle-plugin', version: '\ |release|\ '
-    }
+  plugins {
+    id "kr.motd.sphinx" version "\ |release|\ "
   }
 
   // Apply the 'base' plugin, which adds the 'site' task.
@@ -35,8 +30,11 @@ To apply this plugin, add the following to your ``build.gradle`` file:
   //       other plugin that extends 'base', such as 'java'.
   apply plugin: 'base'
 
-  // Apply the Sphinx plugin.
-  apply plugin: 'kr.motd.sphinx'
+.. hint::
+
+  You can also use the traditional ``buildscript`` approach.
+  See `plugins.gradle.org <https://plugins.gradle.org/plugin/kr.motd.sphinx>`_
+  for more information.
 
 Now you can build your project web site using the ``site`` or ``sphinx`` task::
 
