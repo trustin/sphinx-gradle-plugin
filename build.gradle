@@ -7,11 +7,6 @@ apply plugin: 'groovy'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-ext {
-    pomFile = file("${project.buildDir}/generated-pom.xml")
-    isReleaseVersion = !(project.version =~ /-SNAPSHOT$/)
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -20,7 +15,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.2.2') {
+    compile(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.2.3') {
         exclude group: 'org.apache.maven.shared', module: 'maven-filtering'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-api'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-impl'
