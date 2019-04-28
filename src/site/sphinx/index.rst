@@ -57,4 +57,4 @@ Read more
    basic-usage
    configuration
    Release notes <https://github.com/trustin/sphinx-gradle-plugin/releases>
-   Fork me at GitHub <https://github.com/trustin/sphinx-gradle-plugin>
+   Fork me on GitHub <https://github.com/trustin/sphinx-gradle-plugin>
