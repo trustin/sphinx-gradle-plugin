@@ -58,7 +58,7 @@ pluginBundle {
 }
 
 task site(type: JavaExec, dependsOn: tasks.check) {
-    inputs.dir "${project.projectDir}/src/sphinx"
+    inputs.dir "${project.projectDir}/src/site/sphinx"
     outputs.dir "${project.buildDir}/site"
     classpath sourceSets.test.runtimeClasspath
     main 'kr.motd.gradle.sphinx.SiteMain'
