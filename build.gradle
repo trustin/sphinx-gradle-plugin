@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.plugin-publish' version '0.10.0'
+    id 'com.gradle.plugin-publish' version '0.10.1'
 }
 
 apply plugin: 'groovy'
@@ -15,7 +15,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.3.1') {
+    compile(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.4.0') {
         exclude group: 'org.apache.maven.shared', module: 'maven-filtering'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-api'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-impl'
