@@ -24,6 +24,7 @@ class SphinxTask extends DefaultTask {
     def tags = { Collections.emptyList() }
     private final def additionalTags = new ArrayList<String>()
     def verbose = { true }
+    def traceback = { true }
     def force = { false }
     def warningsAsErrors = { false }
     def skip = { false }
@@ -118,6 +119,11 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
+    boolean isTraceback() {
+        (traceback instanceof Boolean ? traceback : verbose()).asBoolean()
+    }
+
+    @Input
     boolean isForce() {
         (force instanceof Boolean ? force : force()).asBoolean()
     }
@@ -160,6 +166,10 @@ class SphinxTask extends DefaultTask {
             args.add('-v')
         } else {
             args.add('-Q')
+        }
+
+        if (isTraceback()) {
+            args.add('-T')
         }
 
         if (isWarningsAsErrors()) {
