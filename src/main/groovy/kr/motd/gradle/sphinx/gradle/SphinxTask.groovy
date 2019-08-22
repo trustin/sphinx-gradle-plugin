@@ -78,6 +78,7 @@ class SphinxTask extends DefaultTask {
 
     @SkipWhenEmpty
     @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
     File getSourceDirectory() {
         project.file(sourceDirectory).getCanonicalFile()
     }
