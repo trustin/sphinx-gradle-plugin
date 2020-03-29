@@ -20,6 +20,7 @@ class SphinxTask extends DefaultTask {
         "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
     }
     def outputDirectory = { "${project.buildDir}${File.separator}site" }
+    def doctreeCacheDirectory = { "${project.buildDir}${File.separator}site${File.separator}.doctrees" }
     def builder = { "html" }
     def tags = { Collections.emptyList() }
     private final def additionalTags = new ArrayList<String>()
@@ -28,6 +29,7 @@ class SphinxTask extends DefaultTask {
     def force = { false }
     def warningsAsErrors = { false }
     def skip = { false }
+    def useDoctreeCache = { false }
 
     private static def unwrap(Object o) {
         if (o instanceof Callable) {
@@ -89,6 +91,12 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
+    @Optional
+    File getDoctreeCacheDirectory() {
+        project.file(doctreeCacheDirectory).getCanonicalFile()
+    }
+
+    @Input
     String getBuilder() {
         return String.valueOf(unwrap(builder))
     }
@@ -132,6 +140,11 @@ class SphinxTask extends DefaultTask {
     @Input
     boolean isWarningsAsErrors() {
         (warningsAsErrors instanceof Boolean ? warningsAsErrors : warningsAsErrors()).asBoolean()
+    }
+
+    @Input
+    boolean isUseDoctreeCache() {
+        (useDoctreeCache instanceof Boolean ? useDoctreeCache : useDoctreeCache()).asBoolean()
     }
 
     @Input
@@ -180,6 +193,11 @@ class SphinxTask extends DefaultTask {
         if (isForce()) {
             args.add('-a')
             args.add('-E')
+        }
+
+        if (isUseDoctreeCache()) {
+            args.add('-d')
+            args.add(getDoctreeCacheDirectory().getPath())
         }
 
         for (String tag : getTags()) {

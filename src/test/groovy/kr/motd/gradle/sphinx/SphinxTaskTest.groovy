@@ -76,4 +76,29 @@ class SphinxTaskTest {
         assert new File("${task.outputDirectory}/.doctrees").exists()
         assert new File("${task.outputDirectory}/.buildinfo").exists()
     }
+
+    @Test
+    void testDoctreeRedirect() {
+        def sourceDir = ['../../../..', '../../..'].stream()
+                .map({ "${getClass().protectionDomain.codeSource.location.path}$it/src/site/sphinx" })
+                .filter({ new File(it).isDirectory() })
+                .findFirst().get()
+
+        project.ant.mkdir(dir: "${task.sourceDirectory}")
+        project.ant.copy(todir: "${task.sourceDirectory}") {
+            fileset(dir: sourceDir)
+        }
+
+        task.binaryCacheDir = new File(System.getProperty("user.home") +
+                                       "/.gradle/caches/sphinx-binary")
+        task.tags = { ["tagFoo"] }
+        task.tags "tagBar"
+        task.environments = { ['ENV_FOO': '1'] }
+        task.env 'ENV_BAR', '2'
+        task.doctreeCacheDirectory = new File("${task.outputDirectory}/redirectedDoctrees/")
+        task.useDoctreeCache = true
+        task.run()
+
+        assert new File("${task.outputDirectory}/redirectedDoctrees").exists()
+    }
 }
