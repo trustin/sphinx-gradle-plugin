@@ -48,7 +48,7 @@ class SphinxTask extends DefaultTask {
         this.binaryUrl = binaryUrl
     }
 
-    @InputFile
+    @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     File getBinaryCacheDir() {
         return project.file(binaryCacheDir).getCanonicalFile()
@@ -115,7 +115,7 @@ class SphinxTask extends DefaultTask {
         this.outputDirectory = outputDirectory
     }
 
-    @InputFile
+    @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     File getDoctreeCacheDirectory() {
         project.file(doctreeCacheDirectory).getCanonicalFile()
