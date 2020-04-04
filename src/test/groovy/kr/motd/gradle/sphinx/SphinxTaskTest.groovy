@@ -29,7 +29,12 @@ class SphinxTaskTest {
         assert task.builder == 'html'
         assert task.tags.isEmpty()
         assert task.verbose
+        assert task.traceback
+        assert !task.force
+        assert !task.skip
         assert !task.warningsAsErrors
+        assert !task.useDoctreeCache
+        assert task.doctreeCacheDirectory == null
     }
 
     @Test
@@ -39,7 +44,11 @@ class SphinxTaskTest {
         task.builder 'mo'
         task.tags 'foo', 'bar'
         task.verbose false
+        task.traceback false
+        task.force true
+        task.skip true
         task.warningsAsErrors true
+        task.useDoctreeCache true
 
         assert "${task.getSourceDirectory()}" ==
                 "${project.projectDir}${File.separator}src${File.separator}my${File.separator}sphinx"
@@ -49,7 +58,18 @@ class SphinxTaskTest {
         assert task.builder == 'mo'
         assert task.tags == [ "foo", "bar" ]
         assert !task.verbose
+        assert !task.traceback
+        assert task.force
+        assert task.skip
         assert task.warningsAsErrors
+        assert task.useDoctreeCache
+        assert "${task.doctreeCacheDirectory}" ==
+                "${project.buildDir}${File.separator}site${File.separator}.doctrees"
+
+        task.doctreeCacheDirectory "${project.buildDir}/my/doctree-cache"
+        assert task.doctreeCacheDirectory.isDirectory()
+        assert "${task.doctreeCacheDirectory}" ==
+                "${project.buildDir}${File.separator}my${File.separator}doctree-cache"
     }
 
     @Test

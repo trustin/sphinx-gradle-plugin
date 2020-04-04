@@ -11,25 +11,25 @@ import java.util.concurrent.Callable
 
 class SphinxTask extends DefaultTask {
 
-    private def binaryUrl = { SphinxRunner.DEFAULT_BINARY_URL }
-    private def binaryCacheDir = { "${project.gradle.gradleUserHomeDir}/caches/sphinx-binary" }
-    private def environments = { Collections.emptyMap() }
+    def binaryUrl = { SphinxRunner.DEFAULT_BINARY_URL }
+    def binaryCacheDir = { "${project.gradle.gradleUserHomeDir}/caches/sphinx-binary" }
+    def environments = { Collections.emptyMap() }
     private final def additionalEnvironments = new HashMap<String, String>()
-    private def dotBinary = null
-    private def sourceDirectory = {
+    def dotBinary = null
+    def sourceDirectory = {
         "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
     }
-    private def outputDirectory = { "${project.buildDir}${File.separator}site" }
-    private def doctreeCacheDirectory = { "${project.buildDir}${File.separator}site${File.separator}.doctrees" }
-    private def builder = { "html" }
-    private def tags = { Collections.emptyList() }
+    def outputDirectory = { "${project.buildDir}${File.separator}site" }
+    def doctreeCacheDirectory = { "${project.buildDir}${File.separator}site${File.separator}.doctrees" }
+    def builder = { "html" }
+    def tags = { Collections.emptyList() }
     private final def additionalTags = new ArrayList<String>()
-    private def verbose = { true }
-    private def traceback = { true }
-    private def force = { false }
-    private def warningsAsErrors = { false }
-    private def skip = { false }
-    private def useDoctreeCache = { false }
+    def verbose = { true }
+    def traceback = { true }
+    def force = { false }
+    def warningsAsErrors = { false }
+    def skip = { false }
+    def useDoctreeCache = { false }
 
     private static def unwrap(Object o) {
         if (o instanceof Callable) {
@@ -48,6 +48,10 @@ class SphinxTask extends DefaultTask {
         this.binaryUrl = binaryUrl
     }
 
+    void binaryUrl(Object binaryUrl) {
+        setBinaryUrl(binaryUrl);
+    }
+
     @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     File getBinaryCacheDir() {
@@ -55,7 +59,11 @@ class SphinxTask extends DefaultTask {
     }
 
     void setBinaryCacheDir(Object binaryCacheDir) {
-        this.binaryCacheDir = binaryCacheDir;
+        this.binaryCacheDir = binaryCacheDir
+    }
+
+    void binaryCacheDir(Object binaryCacheDir) {
+        setBinaryCacheDir(binaryCacheDir);
     }
 
     @Input
@@ -95,6 +103,10 @@ class SphinxTask extends DefaultTask {
         this.dotBinary = dotBinary
     }
 
+    void dotBinary(Object dotBinary) {
+        setDotBinary(dotBinary);
+    }
+
     @SkipWhenEmpty
     @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -106,6 +118,10 @@ class SphinxTask extends DefaultTask {
         this.sourceDirectory = sourceDirectory
     }
 
+    void sourceDirectory(Object sourceDirectory) {
+        setSourceDirectory(sourceDirectory);
+    }
+
     @OutputDirectory
     File getOutputDirectory() {
         project.file(outputDirectory).getCanonicalFile()
@@ -115,14 +131,29 @@ class SphinxTask extends DefaultTask {
         this.outputDirectory = outputDirectory
     }
 
+    void outputDirectory(Object outputDirectory) {
+        setOutputDirectory(outputDirectory);
+    }
+
+    @Optional
     @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     File getDoctreeCacheDirectory() {
-        project.file(doctreeCacheDirectory).getCanonicalFile()
+        if (getUseDoctreeCache()) {
+            def doctreeCacheDirectory = project.file(this.doctreeCacheDirectory)
+            doctreeCacheDirectory.mkdirs()
+            return doctreeCacheDirectory.getCanonicalFile()
+        } else {
+            return null
+        }
     }
 
     void setDoctreeCacheDirectory(Object doctreeCacheDirectory) {
         this.doctreeCacheDirectory = doctreeCacheDirectory
+    }
+
+    void doctreeCacheDirectory(Object doctreeCacheDirectory) {
+        setDoctreeCacheDirectory(doctreeCacheDirectory);
     }
 
     @Input
@@ -132,6 +163,10 @@ class SphinxTask extends DefaultTask {
 
     void setBuilder(Object builder) {
         this.builder = builder
+    }
+
+    void builder(Object builder) {
+        setBuilder(builder);
     }
 
     @Input
@@ -160,7 +195,7 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
-    boolean isVerbose() {
+    boolean getVerbose() {
         (verbose instanceof Boolean ? verbose : verbose()).asBoolean()
     }
 
@@ -168,8 +203,12 @@ class SphinxTask extends DefaultTask {
         this.verbose = verbose
     }
 
+    void verbose(Object verbose) {
+        this.verbose = verbose;
+    }
+
     @Input
-    boolean isTraceback() {
+    boolean getTraceback() {
         (traceback instanceof Boolean ? traceback : verbose()).asBoolean()
     }
 
@@ -177,8 +216,12 @@ class SphinxTask extends DefaultTask {
         this.traceback = traceback
     }
 
+    void traceback(Object traceback) {
+        setTraceback(traceback);
+    }
+
     @Input
-    boolean isForce() {
+    boolean getForce() {
         (force instanceof Boolean ? force : force()).asBoolean()
     }
 
@@ -186,8 +229,12 @@ class SphinxTask extends DefaultTask {
         this.force = force
     }
 
+    void force(Object force) {
+        setForce(force);
+    }
+
     @Input
-    boolean isWarningsAsErrors() {
+    boolean getWarningsAsErrors() {
         (warningsAsErrors instanceof Boolean ? warningsAsErrors : warningsAsErrors()).asBoolean()
     }
 
@@ -195,8 +242,12 @@ class SphinxTask extends DefaultTask {
         this.warningsAsErrors = warningsAsErrors
     }
 
+    void warningsAsErrors(Object warningsAsErrors) {
+        setWarningsAsErrors(warningsAsErrors);
+    }
+
     @Input
-    boolean isUseDoctreeCache() {
+    boolean getUseDoctreeCache() {
         (useDoctreeCache instanceof Boolean ? useDoctreeCache : useDoctreeCache()).asBoolean()
     }
 
@@ -204,8 +255,12 @@ class SphinxTask extends DefaultTask {
         this.useDoctreeCache = useDoctreeCache
     }
 
+    void useDoctreeCache(Object useDoctreeCache) {
+        setUseDoctreeCache(useDoctreeCache)
+    }
+
     @Input
-    boolean isSkip() {
+    boolean getSkip() {
         (skip instanceof Boolean ? skip : skip()).asBoolean()
     }
 
@@ -213,9 +268,13 @@ class SphinxTask extends DefaultTask {
         this.skip = skip
     }
 
+    void skip(Object skip) {
+        setSkip(skip)
+    }
+
     @TaskAction
     def run() {
-        if (isSkip()) {
+        if (getSkip()) {
             logger.info("Skipping Sphinx execution.")
             return
         }
@@ -237,28 +296,29 @@ class SphinxTask extends DefaultTask {
     private List<String> getSphinxRunnerCmdLine() {
         List<String> args = []
 
-        if (isVerbose()) {
+        if (getVerbose()) {
             args.add('-v')
         } else {
             args.add('-Q')
         }
 
-        if (isTraceback()) {
+        if (getTraceback()) {
             args.add('-T')
         }
 
-        if (isWarningsAsErrors()) {
+        if (getWarningsAsErrors()) {
             args.add('-W')
         }
 
-        if (isForce()) {
+        if (getForce()) {
             args.add('-a')
             args.add('-E')
         }
 
-        if (isUseDoctreeCache()) {
+        def doctreeCacheDirectory = getDoctreeCacheDirectory();
+        if (doctreeCacheDirectory != null) {
             args.add('-d')
-            args.add(getDoctreeCacheDirectory().getPath())
+            args.add(doctreeCacheDirectory.getPath())
         }
 
         for (String tag : getTags()) {
