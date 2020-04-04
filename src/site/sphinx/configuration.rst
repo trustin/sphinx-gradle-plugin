@@ -6,22 +6,24 @@ Configuration
 
 ``sphinx-gradle-plugin`` has these configuration options:
 
-======================== ================================================================================================= ========================================
-Parameter                Description                                                                                       Default value
-======================== ================================================================================================= ========================================
-``sourceDirectory``      The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
-``outputDirectory``      The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
-``binaryUrl``            The URL of the Sphinx executable binary. Must start with ``file:``, ``http:`` or ``https:``       <automatic>
-``environments``         The environment variables to set when launching Sphinx. e.g. ``environments = ['foo':'bar']``
-``dotBinary``            The path of Graphviz ``dot`` binary.
-``builder``              The builder to use. See `Available builders`_ for a list of possible builders.                    ``html``
-``verbose``              Whether Sphinx should generate verbose output.                                                    ``true``
-``traceback``            Whether Sphinx should print full traceback on exception.                                          ``true``
-``warningsAsErrors``     Whether warnings should be treated as errors.                                                     ``false``
-``force``                Whether Sphinx should generate output for all files instead of only the changed ones.             ``false``
-``tags``                 Additional tags to pass to Sphinx. See `Including content based on tags`_ for more information.
-``skip``                 Whether Sphinx execution should be skipped.                                                       ``false``
-======================== ================================================================================================= ========================================
+========================= ================================================================================================= ========================================
+Parameter                 Description                                                                                       Default value
+========================= ================================================================================================= ========================================
+``sourceDirectory``       The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
+``outputDirectory``       The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
+``binaryUrl``             The URL of the Sphinx executable binary. Must start with ``file:``, ``http:`` or ``https:``       <automatic>
+``environments``          The environment variables to set when launching Sphinx. e.g. ``environments = ['foo':'bar']``
+``dotBinary``             The path of Graphviz ``dot`` binary.
+``builder``               The builder to use. See `Available builders`_ for a list of possible builders.                    ``html``
+``verbose``               Whether Sphinx should generate verbose output.                                                    ``true``
+``traceback``             Whether Sphinx should print full traceback on exception.                                          ``true``
+``warningsAsErrors``      Whether warnings should be treated as errors.                                                     ``false``
+``force``                 Whether Sphinx should generate output for all files instead of only the changed ones.             ``false``
+``tags``                  Additional tags to pass to Sphinx. See `Including content based on tags`_ for more information.
+``skip``                  Whether Sphinx execution should be skipped.                                                       ``false``
+``useDoctreeCache``       Whether doctree cache should be used.                                                             ``false``
+``doctreeCacheDirectory`` The directory containing Sphinx doctree cache. Used only when ``useDoctreeCache`` is ``true``     ``${project.buildDir}/site/.doctrees``
+========================= ================================================================================================= ========================================
 
 Sample Documentation Config
 ===========================
