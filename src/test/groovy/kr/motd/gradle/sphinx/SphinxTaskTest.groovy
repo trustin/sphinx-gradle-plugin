@@ -35,12 +35,14 @@ class SphinxTaskTest {
         assert !task.warningsAsErrors
         assert !task.useDoctreeCache
         assert task.doctreeCacheDirectory == null
+        assert !task.useMakeMode
     }
 
     @Test
     void testOverriddenProperties() {
         task.sourceDirectory "${project.projectDir}/src/my/sphinx"
         task.outputDirectory "${project.buildDir}/my/sphinx"
+        task.binaryCacheDir "${project.buildDir}/my/cache"
         task.builder 'mo'
         task.tags 'foo', 'bar'
         task.verbose false
@@ -49,11 +51,15 @@ class SphinxTaskTest {
         task.skip true
         task.warningsAsErrors true
         task.useDoctreeCache true
+        task.useMakeMode true
 
-        assert "${task.getSourceDirectory()}" ==
+        assert "${task.sourceDirectory}" ==
                 "${project.projectDir}${File.separator}src${File.separator}my${File.separator}sphinx"
-        assert "${task.getOutputDirectory()}" ==
+        assert "${task.outputDirectory}" ==
                 "${project.buildDir}${File.separator}my${File.separator}sphinx"
+        assert "${task.binaryCacheDir}" ==
+                "${project.buildDir}${File.separator}my${File.separator}cache"
+        assert task.binaryCacheDir.isDirectory()
 
         assert task.builder == 'mo'
         assert task.tags == [ "foo", "bar" ]
@@ -65,6 +71,7 @@ class SphinxTaskTest {
         assert task.useDoctreeCache
         assert "${task.doctreeCacheDirectory}" ==
                 "${project.buildDir}${File.separator}site${File.separator}.doctrees"
+        assert task.useMakeMode
 
         task.doctreeCacheDirectory "${project.buildDir}/my/doctree-cache"
         assert task.doctreeCacheDirectory.isDirectory()

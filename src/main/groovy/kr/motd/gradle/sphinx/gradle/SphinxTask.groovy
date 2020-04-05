@@ -30,6 +30,7 @@ class SphinxTask extends DefaultTask {
     def warningsAsErrors = { false }
     def skip = { false }
     def useDoctreeCache = { false }
+    def useMakeMode = { false }
 
     private static def unwrap(Object o) {
         if (o instanceof Callable) {
@@ -55,7 +56,9 @@ class SphinxTask extends DefaultTask {
     @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     File getBinaryCacheDir() {
-        return project.file(binaryCacheDir).getCanonicalFile()
+        def binaryCacheDir = project.file(this.binaryCacheDir)
+        binaryCacheDir.mkdirs()
+        return binaryCacheDir.getCanonicalFile()
     }
 
     void setBinaryCacheDir(Object binaryCacheDir) {
@@ -260,6 +263,19 @@ class SphinxTask extends DefaultTask {
     }
 
     @Input
+    boolean getUseMakeMode() {
+        (useMakeMode instanceof Boolean ? useMakeMode : useMakeMode()).asBoolean()
+    }
+
+    void setUseMakeMode(Object useMakeMode) {
+        this.useMakeMode = useMakeMode
+    }
+
+    void useMakeMode(Object useMakeMode) {
+        setUseMakeMode(useMakeMode)
+    }
+
+    @Input
     boolean getSkip() {
         (skip instanceof Boolean ? skip : skip()).asBoolean()
     }
@@ -296,6 +312,9 @@ class SphinxTask extends DefaultTask {
     private List<String> getSphinxRunnerCmdLine() {
         List<String> args = []
 
+        args.add(getUseMakeMode() ? '-M' : '-b')
+        args.add(getBuilder())
+
         if (getVerbose()) {
             args.add('-v')
         } else {
@@ -327,9 +346,6 @@ class SphinxTask extends DefaultTask {
         }
 
         args.add('-n')
-
-        args.add('-b')
-        args.add(getBuilder())
 
         args.add(getSourceDirectory().getPath())
         args.add(getOutputDirectory().getPath())

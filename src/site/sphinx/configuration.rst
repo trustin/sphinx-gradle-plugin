@@ -23,6 +23,7 @@ Parameter                 Description                                           
 ``skip``                  Whether Sphinx execution should be skipped.                                                       ``false``
 ``useDoctreeCache``       Whether doctree cache should be used.                                                             ``false``
 ``doctreeCacheDirectory`` The directory containing Sphinx doctree cache. Used only when ``useDoctreeCache`` is ``true``     ``${project.buildDir}/site/.doctrees``
+``useMakeMode``           Whether Sphinx should use 'make mode' (``-M`` option) instead of 'build mode' (``-b`` option).    ``false``
 ========================= ================================================================================================= ========================================
 
 Sample Documentation Config

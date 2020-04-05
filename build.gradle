@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
-    implementation(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.7.0') {
+    implementation(group: 'kr.motd.maven', name: 'sphinx-maven-plugin', version: '2.9.0') {
         exclude group: 'org.apache.maven.shared', module: 'maven-filtering'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-api'
         exclude group: 'org.apache.maven.reporting', module: 'maven-reporting-impl'
