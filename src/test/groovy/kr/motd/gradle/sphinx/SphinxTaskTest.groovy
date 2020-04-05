@@ -80,6 +80,47 @@ class SphinxTaskTest {
     }
 
     @Test
+    void testOverriddenPropertiesViaSetter() {
+        task.sourceDirectory = "${project.projectDir}/src/my/sphinx"
+        task.outputDirectory = "${project.buildDir}/my/sphinx"
+        task.binaryCacheDir = "${project.buildDir}/my/cache"
+        task.builder = 'mo'
+        task.tags = ['foo', 'bar']
+        task.verbose = false
+        task.traceback = false
+        task.force = true
+        task.skip = true
+        task.warningsAsErrors = true
+        task.useDoctreeCache = true
+        task.useMakeMode = true
+
+        assert "${task.sourceDirectory}" ==
+                "${project.projectDir}${File.separator}src${File.separator}my${File.separator}sphinx"
+        assert "${task.outputDirectory}" ==
+                "${project.buildDir}${File.separator}my${File.separator}sphinx"
+        assert "${task.binaryCacheDir}" ==
+                "${project.buildDir}${File.separator}my${File.separator}cache"
+        assert task.binaryCacheDir.isDirectory()
+
+        assert task.builder == 'mo'
+        assert task.tags == [ "foo", "bar" ]
+        assert !task.verbose
+        assert !task.traceback
+        assert task.force
+        assert task.skip
+        assert task.warningsAsErrors
+        assert task.useDoctreeCache
+        assert "${task.doctreeCacheDirectory}" ==
+                "${project.buildDir}${File.separator}site${File.separator}.doctrees"
+        assert task.useMakeMode
+
+        task.doctreeCacheDirectory "${project.buildDir}/my/doctree-cache"
+        assert task.doctreeCacheDirectory.isDirectory()
+        assert "${task.doctreeCacheDirectory}" ==
+                "${project.buildDir}${File.separator}my${File.separator}doctree-cache"
+    }
+
+    @Test
     void testGeneration() {
         def sourceDir = ['../../../..', '../../..'].stream()
                 .map({ "${getClass().protectionDomain.codeSource.location.path}$it/src/site/sphinx" })
@@ -116,8 +157,7 @@ class SphinxTaskTest {
             fileset(dir: sourceDir)
         }
 
-        task.binaryCacheDir = new File(System.getProperty("user.home") +
-                                       "/.gradle/caches/sphinx-binary")
+        task.binaryCacheDir = new File(System.getProperty("user.home") + "/.gradle/caches/sphinx-binary")
         task.tags = { ["tagFoo"] }
         task.tags "tagBar"
         task.environments = { ['ENV_FOO': '1'] }
