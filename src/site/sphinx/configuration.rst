@@ -37,7 +37,6 @@ documentation is given below:
 
   # -*- coding: utf-8 -*-
   import sys, os
-  from recommonmark.parser import CommonMarkParser
 
   project = u'My Project'
   copyright = u'YYYY, John Doe'
@@ -50,14 +49,10 @@ documentation is given below:
   pygments_style = 'tango'
   add_function_parentheses = True
 
-  extensions = ['sphinx.ext.autodoc', 'sphinxcontrib.plantuml']
+  extensions = ['recommonmark', 'sphinx.ext.autodoc', 'sphinxcontrib.plantuml']
   templates_path = ['_templates']
   exclude_trees = ['.build']
-  source_suffix = ['.rst', '.md']
   source_encoding = 'utf-8-sig'
-  source_parsers = {
-    '.md': CommonMarkParser
-  }
 
   # HTML options
   html_theme = 'sphinx_rtd_theme'
