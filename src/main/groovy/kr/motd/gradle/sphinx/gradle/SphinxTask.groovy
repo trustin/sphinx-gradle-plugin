@@ -19,6 +19,7 @@ class SphinxTask extends DefaultTask {
     def sourceDirectory = {
         "${project.projectDir}${File.separator}src${File.separator}site${File.separator}sphinx"
     }
+    def configDirectory = null
     def outputDirectory = { "${project.buildDir}${File.separator}site" }
     def doctreeCacheDirectory = { "${project.buildDir}${File.separator}site${File.separator}.doctrees" }
     def builder = { "html" }
@@ -123,6 +124,26 @@ class SphinxTask extends DefaultTask {
 
     void sourceDirectory(Object sourceDirectory) {
         setSourceDirectory(sourceDirectory);
+    }
+
+    @SkipWhenEmpty
+    @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
+    @Optional
+    File getConfigDirectory() {
+        if (configDirectory == null) {
+            return null
+        } else {
+            return project.file(configDirectory).getCanonicalFile()
+        }
+    }
+
+    void setConfigDirectory(Object configDirectory) {
+        this.configDirectory = configDirectory
+    }
+
+    void configDirectory(Object configDirectory) {
+        setSourceDirectory(configDirectory);
     }
 
     @OutputDirectory
@@ -334,7 +355,13 @@ class SphinxTask extends DefaultTask {
             args.add('-E')
         }
 
-        def doctreeCacheDirectory = getDoctreeCacheDirectory();
+        def configDirectory = getConfigDirectory()
+        if (configDirectory != null) {
+            args.add('-c')
+            args.add(configDirectory.getPath())
+        }
+
+        def doctreeCacheDirectory = getDoctreeCacheDirectory()
         if (doctreeCacheDirectory != null) {
             args.add('-d')
             args.add(doctreeCacheDirectory.getPath())

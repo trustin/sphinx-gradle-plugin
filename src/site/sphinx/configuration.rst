@@ -10,6 +10,7 @@ Configuration
 Parameter                 Description                                                                                       Default value
 ========================= ================================================================================================= ========================================
 ``sourceDirectory``       The directory containing the documentation source.                                                ``${project.projectDir}/src/site/sphinx``
+``configDirectory``       The directory containing the ``conf.py`` file.
 ``outputDirectory``       The directory where the generated output will be placed.                                          ``${project.buildDir}/site``
 ``binaryUrl``             The URL of the Sphinx executable binary. Must start with ``file:``, ``http:`` or ``https:``       <automatic>
 ``environments``          The environment variables to set when launching Sphinx. e.g. ``environments = ['foo':'bar']``
